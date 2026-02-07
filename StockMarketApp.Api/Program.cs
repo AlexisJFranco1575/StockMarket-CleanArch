@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StockMarketApp.Infrastructure.Persistence;
+using StockMarketApp.Domain.Interfaces;
+using StockMarketApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +9,9 @@ builder.Services.AddDbContext<StockDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     b => b.MigrationsAssembly("StockMarketApp.Api")));
 
-    builder.Services.AddControllers();
+builder.Services.AddControllers();
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

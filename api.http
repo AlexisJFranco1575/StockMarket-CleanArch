@@ -23,3 +23,17 @@ Content-Type: application/json
   "purchasePrice": 310.00,
   "quantity": 5
 }
+
+### 4. Actualizar Microsoft (Cambiar precio y cantidad)
+PUT http://localhost:5168/api/stock/2
+Content-Type: application/json
+
+{
+  "symbol": "MSFT",
+  "companyName": "Microsoft Corporation Updated",
+  "purchasePrice": 350.00,
+  "quantity": 50
+}
+
+### 5. Eliminar Apple (ID 1)
+DELETE http://localhost:5168/api/stock/1
