@@ -1,0 +1,25 @@
+### 1. Obtener todas las acciones
+GET http://localhost:5168/api/stock
+Accept: application/json
+
+### 2. Crear una acción de Apple (AAPL)
+POST http://localhost:5168/api/stock
+Content-Type: application/json
+
+{
+  "symbol": "AAPL",
+  "companyName": "Apple Inc.",
+  "purchasePrice": 150.50,
+  "quantity": 10
+}
+
+### 3. Crear una acción de Microsoft (MSFT)
+POST http://localhost:5168/api/stock
+Content-Type: application/json
+
+{
+  "symbol": "MSFT",
+  "companyName": "Microsoft Corp.",
+  "purchasePrice": 310.00,
+  "quantity": 5
+}
