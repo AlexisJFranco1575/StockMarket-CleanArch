@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  stock-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: stock_sql_server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PasswordMarket2026!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlvolume:/var/opt/mssql
+
+volumes:
+  sqlvolume:

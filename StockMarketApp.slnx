@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="StockMarketApp.Api/StockMarketApp.Api.csproj" />
+  <Project Path="StockMarketApp.Application/StockMarketApp.Application.csproj" />
+  <Project Path="StockMarketApp.Domain/StockMarketApp.Domain.csproj" />
+  <Project Path="StockMarketApp.Infrastructure/StockMarketApp.Infrastructure.csproj" />
+</Solution>
