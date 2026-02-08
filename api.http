@@ -25,7 +25,7 @@ Content-Type: application/json
 }
 
 ### 4. Actualizar Microsoft (Cambiar precio y cantidad)
-PUT http://localhost:5168/api/stock/2
+PUT http://localhost:5168/api/stock/6
 Content-Type: application/json
 
 {
@@ -37,3 +37,14 @@ Content-Type: application/json
 
 ### 5. Eliminar Apple (ID 1)
 DELETE http://localhost:5168/api/stock/1
+
+### 6. Intentar crear una acción inválida (Debería fallar)
+POST http://localhost:5168/api/stock
+Content-Type: application/json
+
+{
+  "symbol": "ESTE_SIMBOLO_ES_MUY_LARGO_PARA_SER_REAL",
+  "companyName": "",
+  "purchasePrice": -50.00,
+  "quantity": 0
+}
