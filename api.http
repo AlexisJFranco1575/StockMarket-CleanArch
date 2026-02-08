@@ -48,3 +48,15 @@ Content-Type: application/json
   "purchasePrice": -50.00,
   "quantity": 0
 }
+
+### 7. Crear comentario para el Stock 2 (Microsoft)
+POST http://localhost:5168/api/comment/2
+Content-Type: application/json
+
+{
+  "title": "Gran inversión",
+  "content": "Creo que Microsoft va a subir mucho este año."
+}
+
+### 8. Ver todos los comentarios
+GET http://localhost:5168/api/comment

@@ -10,6 +10,7 @@ namespace StockMarketApp.Infrastructure.Persistence
         }
 
         public DbSet<Stock> Stocks { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

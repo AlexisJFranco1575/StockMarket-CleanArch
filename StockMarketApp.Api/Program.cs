@@ -11,6 +11,7 @@ builder.Services.AddDbContext<StockDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

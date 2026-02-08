@@ -8,5 +8,8 @@ namespace StockMarketApp.Domain.Entities
         public decimal PurchasePrice { get; set; }
         public decimal CurrentPrice { get; set; }
         public int Quantity { get; set; }
+
+        // Relación (Foreign Key)
+        public List<Comment> Comments {get; set; } = new List<Comment>();
     }
 }
