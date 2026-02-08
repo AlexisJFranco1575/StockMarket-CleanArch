@@ -69,3 +69,9 @@ GET http://localhost:5168/api/stock?symbol=MSFT
 
 ### 11. Ordenar por Precio (Más caras primero)
 GET http://localhost:5168/api/stock?sortBy=Price&isDescending=true
+
+### 12. Paginación: Página 1, solo 2 elementos
+GET http://localhost:5168/api/stock?pageNumber=1&pageSize=2
+
+### 13. Paginación: Página 2 (Debería saltarse los dos primeros)
+GET http://localhost:5168/api/stock?pageNumber=2&pageSize=2

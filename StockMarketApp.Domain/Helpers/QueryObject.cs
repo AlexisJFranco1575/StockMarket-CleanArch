@@ -7,5 +7,9 @@ namespace StockMarketApp.Application.Helpers
         
         public string? SortBy { get; set; } = null; // Ej: "Symbol", "Price"
         public bool IsDescending { get; set; } = false;
+
+        //Paginación
+        public int PageNumber {get; set;} = 1;
+        public int PageSize {get; set; } = 20;
     }
 }

@@ -16,12 +16,11 @@ namespace StockMarketApp.Infrastructure.Repositories
         }
 
         // --- MÉTODOS DE LECTURA (Con Include) ---
-public async Task<List<Stock>> GetAllAsync(QueryObject query)
+        public async Task<List<Stock>> GetAllAsync(QueryObject query)
 {
-    // 1. Preparamos la consulta (sin ejecutarla aún)
     var stocks = _context.Stocks.Include(c => c.Comments).AsQueryable();
 
-    // 2. Filtros
+    // 1. Filtros (Tu código actual sigue aquí...)
     if (!string.IsNullOrWhiteSpace(query.CompanyName))
     {
         stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
@@ -32,21 +31,23 @@ public async Task<List<Stock>> GetAllAsync(QueryObject query)
         stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol));
     }
 
-    // 3. Ordenamiento
+    // 2. Ordenamiento (Tu código actual sigue aquí...)
     if (!string.IsNullOrWhiteSpace(query.SortBy))
     {
         if (query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
         {
             stocks = query.IsDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
         }
-        else if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase)) // Ordenar por precio de compra
+        else if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
         {
              stocks = query.IsDescending ? stocks.OrderByDescending(s => s.PurchasePrice) : stocks.OrderBy(s => s.PurchasePrice);
         }
     }
 
-    // 4. Ejecutamos SQL y devolvemos la lista filtrada
-    return await stocks.ToListAsync();
+    // --- 3. PAGINACIÓN (NUEVO) ---
+    var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+    return await stocks.Skip(skipNumber).Take(query.PageSize).ToListAsync();
 }
 
         public async Task<Stock?> GetByIdAsync(int id)
