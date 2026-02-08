@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using StockMarketApp.Application.DTOs;
 using StockMarketApp.Domain.Entities;
 using StockMarketApp.Domain.Interfaces;
+using StockMarketApp.Application.Helpers;
 
 namespace StockMarketApp.Api.Controllers
 {
@@ -17,36 +18,59 @@ namespace StockMarketApp.Api.Controllers
             _stockRepo = stockRepo;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+[HttpGet]
+public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
+{
+    // Pasamos el query al repositorio
+    var stocks = await _stockRepo.GetAllAsync(query);
+    
+    // El mapeo a DTO sigue igual...
+    var stockDtos = stocks.Select(s => new
+    {
+        s.Id,
+        s.Symbol,
+        s.CompanyName,
+        s.PurchasePrice,
+        s.CurrentPrice,
+        Comments = s.Comments.Select(c => new 
         {
-            var stocks = await _stockRepo.GetAllAsync();
-            
-            // Mapeo manual de Entidad a DTO
-            var stockDtos = stocks.Select(s => new
-            {
-                s.Id,
-                s.Symbol,
-                s.CompanyName,
-                s.PurchasePrice,
-                s.CurrentPrice
-            });
+            c.Id,
+            c.Title,
+            c.Content,
+            c.CreatedOn
+        }).ToList()
+    });
 
-            return Ok(stockDtos);
-        }
+    return Ok(stockDtos);
+}
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+[HttpGet("{id}")]
+public async Task<IActionResult> GetById([FromRoute] int id)
+{
+    var stock = await _stockRepo.GetByIdAsync(id);
+
+    if (stock == null)
+    {
+        return NotFound();
+    }
+
+    // Mapeo individual
+    return Ok(new 
+    {
+        stock.Id,
+        stock.Symbol,
+        stock.CompanyName,
+        stock.PurchasePrice,
+        stock.CurrentPrice,
+        Comments = stock.Comments.Select(c => new 
         {
-            var stock = await _stockRepo.GetByIdAsync(id);
-
-            if (stock == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(stock);
-        }
+            c.Id,
+            c.Title,
+            c.Content,
+            c.CreatedOn
+        }).ToList()
+    });
+}
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStockRequest stockDto)

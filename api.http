@@ -60,3 +60,12 @@ Content-Type: application/json
 
 ### 8. Ver todos los comentarios
 GET http://localhost:5168/api/comment
+
+### 9. Buscar empresas que contengan "Apple"
+GET http://localhost:5168/api/stock?companyName=Apple
+
+### 10. Buscar por Símbolo "MSFT"
+GET http://localhost:5168/api/stock?symbol=MSFT
+
+### 11. Ordenar por Precio (Más caras primero)
+GET http://localhost:5168/api/stock?sortBy=Price&isDescending=true
