@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StockMarketApp.Domain.Entities;
 
 namespace StockMarketApp.Infrastructure.Persistence
 {
-    public class StockDbContext : DbContext
+    public class StockDbContext : IdentityDbContext<AppUser>
     {
         public StockDbContext(DbContextOptions<StockDbContext> options) : base(options)
         {
@@ -14,14 +15,14 @@ namespace StockMarketApp.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); 
 
             modelBuilder.Entity<Stock>()
-                .Property(p => p.CurrentPrice)
+                .Property(s => s.PurchasePrice)
                 .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Stock>()
-                .Property(p => p.PurchasePrice)
+                .Property(s => s.CurrentPrice)
                 .HasColumnType("decimal(18,2)");
         }
     }
