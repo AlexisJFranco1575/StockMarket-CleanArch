@@ -1,5 +1,5 @@
 using StockMarketApp.Domain.Entities;
-using StockMarketApp.Application.Helpers;
+using StockMarketApp.Domain;
 
 namespace StockMarketApp.Domain.Interfaces
 {

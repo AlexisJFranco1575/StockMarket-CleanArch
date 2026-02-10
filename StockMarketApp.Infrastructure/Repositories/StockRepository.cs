@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using StockMarketApp.Domain.Entities;
 using StockMarketApp.Domain.Interfaces;
 using StockMarketApp.Infrastructure.Persistence;
-using StockMarketApp.Application.Helpers;
+using StockMarketApp.Domain;
 
 namespace StockMarketApp.Infrastructure.Repositories
 {

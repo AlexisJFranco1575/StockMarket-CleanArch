@@ -110,7 +110,7 @@ Content-Type: application/json
 ### 18. Crear acción PROTEGIDA (Usando el Token)
 POST http://localhost:5168/api/stock
 Content-Type: application/json
-Authorization: Bearer PEGA_TU_TOKEN_LARGO_AQUI
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW8xQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6InVzdWFyaW8xIiwibmJmIjoxNzcwNzUxODQyLCJleHAiOjE3NzEzNTY2NDIsImlhdCI6MTc3MDc1MTg0MiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4In0.Ydp1yME4jEuiSzY6IQINuHUzUqGvovQv8jOxqe8b_du4_15WvnvE18bQxPdaf1OSkMMX6-rGx8KCWZITrQfNSA
 
 {
   "symbol": "NVDA",

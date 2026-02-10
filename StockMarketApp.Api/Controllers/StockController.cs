@@ -4,7 +4,7 @@ using StockMarketApp.Application.DTOs;
 using StockMarketApp.Application.Mappers;
 using StockMarketApp.Domain.Entities;
 using StockMarketApp.Domain.Interfaces;
-using StockMarketApp.Domain.Helpers; // <--- CORREGIDO: Ahora está en Domain
+using StockMarketApp.Domain;// <--- CORREGIDO: Ahora está en Domain
 
 namespace StockMarketApp.Api.Controllers
 {
