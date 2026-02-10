@@ -75,3 +75,15 @@ GET http://localhost:5168/api/stock?pageNumber=1&pageSize=2
 
 ### 13. Paginación: Página 2 (Debería saltarse los dos primeros)
 GET http://localhost:5168/api/stock?pageNumber=2&pageSize=2
+
+### 14. Editar el comentario 1 (Cambiar título y contenido)
+PUT http://localhost:5168/api/comment/1
+Content-Type: application/json
+
+{
+  "title": "Opinión Actualizada",
+  "content": "He cambiado de opinión, creo que es momento de vender."
+}
+
+### 15. Eliminar el comentario 1
+DELETE http://localhost:5168/api/comment/1

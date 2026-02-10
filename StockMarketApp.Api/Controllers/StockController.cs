@@ -3,6 +3,7 @@ using StockMarketApp.Application.DTOs;
 using StockMarketApp.Domain.Entities;
 using StockMarketApp.Domain.Interfaces;
 using StockMarketApp.Application.Helpers;
+using StockMarketApp.Application.Mappers;
 
 namespace StockMarketApp.Api.Controllers
 {
@@ -21,25 +22,10 @@ namespace StockMarketApp.Api.Controllers
 [HttpGet]
 public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
 {
-    // Pasamos el query al repositorio
     var stocks = await _stockRepo.GetAllAsync(query);
     
-    // El mapeo a DTO sigue igual...
-    var stockDtos = stocks.Select(s => new
-    {
-        s.Id,
-        s.Symbol,
-        s.CompanyName,
-        s.PurchasePrice,
-        s.CurrentPrice,
-        Comments = s.Comments.Select(c => new 
-        {
-            c.Id,
-            c.Title,
-            c.Content,
-            c.CreatedOn
-        }).ToList()
-    });
+    // ¡Mira qué limpio! Una sola línea hace todo el trabajo sucio
+    var stockDtos = stocks.Select(s => s.ToStockDto());
 
     return Ok(stockDtos);
 }
@@ -54,40 +40,19 @@ public async Task<IActionResult> GetById([FromRoute] int id)
         return NotFound();
     }
 
-    // Mapeo individual
-    return Ok(new 
-    {
-        stock.Id,
-        stock.Symbol,
-        stock.CompanyName,
-        stock.PurchasePrice,
-        stock.CurrentPrice,
-        Comments = stock.Comments.Select(c => new 
-        {
-            c.Id,
-            c.Title,
-            c.Content,
-            c.CreatedOn
-        }).ToList()
-    });
+    return Ok(stock.ToStockDto());
 }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateStockRequest stockDto)
-        {
-            var stockModel = new Stock
-            {
-                Symbol = stockDto.Symbol,
-                CompanyName = stockDto.CompanyName,
-                PurchasePrice = stockDto.PurchasePrice,
-                CurrentPrice = stockDto.PurchasePrice,
-                Quantity = stockDto.Quantity
-            };
+public async Task<IActionResult> Create([FromBody] CreateStockRequest stockDto)
+{
+    // Convertimos DTO a Modelo usando el Mapper
+    var stockModel = stockDto.ToStockFromCreateDTO();
 
-            await _stockRepo.CreateAsync(stockModel);
+    await _stockRepo.CreateAsync(stockModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel);
-        }
+    return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
+}
 
 
         [HttpPut("{id}")]
