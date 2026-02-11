@@ -12,8 +12,8 @@ using StockMarketApp.Infrastructure.Persistence;
 namespace StockMarketApp.Api.Migrations
 {
     [DbContext(typeof(StockDbContext))]
-    [Migration("20260210182430_IdentityCore")]
-    partial class IdentityCore
+    [Migration("20260211184941_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,22 @@ namespace StockMarketApp.Api.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "Admin",
+                            ConcurrencyStamp = "ADMIN",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "User",
+                            ConcurrencyStamp = "USER",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -252,6 +268,21 @@ namespace StockMarketApp.Api.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("StockMarketApp.Domain.Entities.Portfolio", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("StockId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "StockId");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("Portfolios");
+                });
+
             modelBuilder.Entity("StockMarketApp.Domain.Entities.Stock", b =>
                 {
                     b.Property<int>("Id")
@@ -342,9 +373,35 @@ namespace StockMarketApp.Api.Migrations
                     b.Navigation("Stock");
                 });
 
+            modelBuilder.Entity("StockMarketApp.Domain.Entities.Portfolio", b =>
+                {
+                    b.HasOne("StockMarketApp.Domain.Entities.AppUser", "AppUser")
+                        .WithMany("Portfolios")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StockMarketApp.Domain.Entities.Stock", "Stock")
+                        .WithMany("Portfolios")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("StockMarketApp.Domain.Entities.AppUser", b =>
+                {
+                    b.Navigation("Portfolios");
+                });
+
             modelBuilder.Entity("StockMarketApp.Domain.Entities.Stock", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Portfolios");
                 });
 #pragma warning restore 612, 618
         }

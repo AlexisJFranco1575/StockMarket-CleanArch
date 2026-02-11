@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization; // Necesario para [Authorize]
+using Microsoft.AspNetCore.Authorization;
 using StockMarketApp.Application.DTOs;
 using StockMarketApp.Application.Mappers;
 using StockMarketApp.Domain.Entities;
 using StockMarketApp.Domain.Interfaces;
-using StockMarketApp.Domain;// <--- CORREGIDO: Ahora está en Domain
+using StockMarketApp.Domain;
 
 namespace StockMarketApp.Api.Controllers
 {
@@ -75,7 +75,7 @@ namespace StockMarketApp.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize] // 🔒 Protegido
+        [Authorize(Roles = "Admin")] // Protegido
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var stock = await _stockRepo.DeleteAsync(id);

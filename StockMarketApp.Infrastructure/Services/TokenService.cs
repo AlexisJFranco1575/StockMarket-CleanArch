@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,37 +18,40 @@ namespace StockMarketApp.Infrastructure.Services
         public TokenService(IConfiguration config)
         {
             _config = config;
-            // Accedemos a la clave secreta que pusimos en appsettings.json
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(AppUser user, IList<string> roles)
         {
-            // 1. Claims (Lo que dice el pasaporte sobre el usuario)
+            // 1. Claims básicos (Email y Username)
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
             };
 
-            // 2. Credenciales (La firma de seguridad)
+            // 2. AGREGAR ROLES AL TOKEN
+            // Esto es vital: Por cada rol que tenga el usuario, agregamos un claim de tipo "Role"
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
-            // 3. Configuración del Token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7), // El token dura 7 días
+                Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],
                 Audience = _config["JWT:Audience"]
             };
 
-            // 4. Crear el Token
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token); // Devolvemos el string largo y raro
+            return tokenHandler.WriteToken(token);
         }
     }
 }

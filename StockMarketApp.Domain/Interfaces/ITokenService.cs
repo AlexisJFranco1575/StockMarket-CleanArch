@@ -4,6 +4,7 @@ namespace StockMarketApp.Domain.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(AppUser user);
+        // Añadimos "IList<string> roles" como parámetro
+        string CreateToken(AppUser user, IList<string> roles);
     }
 }

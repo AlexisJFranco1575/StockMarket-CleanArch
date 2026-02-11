@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using StockMarketApp.Infrastructure.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using StockMarketApp.Application.Validations; // Para encontrar el validador
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,14 +56,22 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+
+// Agregamos NewtonsoftJson
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
 // D. Repositorios e Inyección de Dependencias
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddFluentValidationAutoValidation(); // Activa la validación automática
+builder.Services.AddValidatorsFromAssemblyContaining<CreateStockRequestValidator>(); // Busca todos los validadores en el proyecto
 
 // E. Controladores y Swagger
-builder.Services.AddControllers();
 builder.Services.AddOpenApi(); 
 
 // ==============================

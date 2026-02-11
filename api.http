@@ -7,10 +7,10 @@ POST http://localhost:5168/api/stock
 Content-Type: application/json
 
 {
-  "symbol": "AAPL",
-  "companyName": "Apple Inc.",
-  "purchasePrice": 150.50,
-  "quantity": 10
+  "symbol": "ALIENWARE",
+  "companyName": "ALIENWARE",
+  "purchasePrice": 250.50,
+  "quantity": 100
 }
 
 ### 3. Crear una acción de Microsoft (MSFT)
@@ -35,15 +35,16 @@ Content-Type: application/json
   "quantity": 50
 }
 
-### 5. Eliminar Apple (ID 1)
+### 5. Eliminar Apple (ID 1) - INTENTO CON USUARIO NORMAL
 DELETE http://localhost:5168/api/stock/1
-
-### 6. Intentar crear una acción inválida (Debería fallar)
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsInJvbGUiOlsiQWRtaW4iLCJVc2VyIl0sIm5iZiI6MTc3MDgzNzgxNSwiZXhwIjoxNzcxNDQyNjE1LCJpYXQiOjE3NzA4Mzc4MTUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.7wL2Ectse4OB6SpXEAG0tgOR_g_abB5LRzlbNcIDMgC7CzhsCR5yERHF431vhBoGCGT3eQQ7Wb0ia_D2pUGWCQ
+### 6. Intentar crear una acción inválida (Debería fallar con 400 Bad Request)
 POST http://localhost:5168/api/stock
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsIm5iZiI6MTc3MDgzNjcwNiwiZXhwIjoxNzcxNDQxNTA2LCJpYXQiOjE3NzA4MzY3MDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.P7RXWc5fDCJVq6JQkf6VMiIOgXNxQcKCy0j4_5V-gudpsOn7C23yZAiME_0e_L5gMGmJZTJI8th3jEd1uAsv3A
 
 {
-  "symbol": "ESTE_SIMBOLO_ES_MUY_LARGO_PARA_SER_REAL",
+  "symbol": "ESTE_SIMBOLO_ES_MUY_LARGO_PARA_SER_REAL", 
   "companyName": "",
   "purchasePrice": -50.00,
   "quantity": 0
@@ -62,7 +63,7 @@ Content-Type: application/json
 GET http://localhost:5168/api/comment
 
 ### 9. Buscar empresas que contengan "Apple"
-GET http://localhost:5168/api/stock?companyName=Apple
+GET http://localhost:5168/api/stock?companyName=ALIENWARE
 
 ### 10. Buscar por Símbolo "MSFT"
 GET http://localhost:5168/api/stock?symbol=MSFT
@@ -93,8 +94,8 @@ POST http://localhost:5168/api/account/register
 Content-Type: application/json
 
 {
-  "username": "usuario1",
-  "email": "usuario1@test.com",
+  "username": "usuario3",
+  "email": "alexfranco1575@gmail.com",
   "password": "Password123!"
 }
 
@@ -103,38 +104,34 @@ POST http://localhost:5168/api/account/login
 Content-Type: application/json
 
 {
-  "username": "usuario1",
+  "username": "usuario3",
   "password": "Password123!"
 }
 
 ### 18. Crear acción PROTEGIDA (Usando el Token)
 POST http://localhost:5168/api/stock
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW8xQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6InVzdWFyaW8xIiwibmJmIjoxNzcwNzUxODQyLCJleHAiOjE3NzEzNTY2NDIsImlhdCI6MTc3MDc1MTg0MiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4In0.Ydp1yME4jEuiSzY6IQINuHUzUqGvovQv8jOxqe8b_du4_15WvnvE18bQxPdaf1OSkMMX6-rGx8KCWZITrQfNSA
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsIm5iZiI6MTc3MDgzNjcwNiwiZXhwIjoxNzcxNDQxNTA2LCJpYXQiOjE3NzA4MzY3MDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.P7RXWc5fDCJVq6JQkf6VMiIOgXNxQcKCy0j4_5V-gudpsOn7C23yZAiME_0e_L5gMGmJZTJI8th3jEd1uAsv3A
 
 {
-  "symbol": "NVDA",
-  "companyName": "Nvidia Corp",
-  "purchasePrice": 450.00,
-  "quantity": 10
+  "symbol": "ALI",
+  "companyName": "Alienware Inc. Prueba a borrar",
+  "purchasePrice": 650.00,
+  "quantity": 200
 }
 
 ### 19. Ver mi portafolio (Debe estar vacío al principio)
 GET http://localhost:5168/api/portfolio
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW8xQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6InVzdWFyaW8xIiwibmJmIjoxNzcwODE5NzAzLCJleHAiOjE3NzE0MjQ1MDMsImlhdCI6MTc3MDgxOTcwMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4In0.pJBbGAFjxsaDceh572IZY0-3jVBJ7t8Jjn_u7ZscHtlIlAr38KKiJGmudRkyvq2CVavlwgXgw_wZd5A1lyN_Ag
-
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsIm5iZiI6MTc3MDgzNjcwNiwiZXhwIjoxNzcxNDQxNTA2LCJpYXQiOjE3NzA4MzY3MDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.P7RXWc5fDCJVq6JQkf6VMiIOgXNxQcKCy0j4_5V-gudpsOn7C23yZAiME_0e_L5gMGmJZTJI8th3jEd1uAsv3A
 ### 20. Agregar Nvidia a mi portafolio (Usamos el símbolo, no el ID)
 POST http://localhost:5168/api/portfolio?symbol=NVDA
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW8xQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6InVzdWFyaW8xIiwibmJmIjoxNzcwODE5NzAzLCJleHAiOjE3NzE0MjQ1MDMsImlhdCI6MTc3MDgxOTcwMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4In0.pJBbGAFjxsaDceh572IZY0-3jVBJ7t8Jjn_u7ZscHtlIlAr38KKiJGmudRkyvq2CVavlwgXgw_wZd5A1lyN_Ag
-
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsIm5iZiI6MTc3MDgzNjcwNiwiZXhwIjoxNzcxNDQxNTA2LCJpYXQiOjE3NzA4MzY3MDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.P7RXWc5fDCJVq6JQkf6VMiIOgXNxQcKCy0j4_5V-gudpsOn7C23yZAiME_0e_L5gMGmJZTJI8th3jEd1uAsv3A
 ### 21. Agregar Apple a mi portafolio (Si la creaste antes)
 POST http://localhost:5168/api/portfolio?symbol=AAPL
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW8xQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6InVzdWFyaW8xIiwibmJmIjoxNzcwODE5NzAzLCJleHAiOjE3NzE0MjQ1MDMsImlhdCI6MTc3MDgxOTcwMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4In0.pJBbGAFjxsaDceh572IZY0-3jVBJ7t8Jjn_u7ZscHtlIlAr38KKiJGmudRkyvq2CVavlwgXgw_wZd5A1lyN_Ag
-
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsIm5iZiI6MTc3MDgzNjcwNiwiZXhwIjoxNzcxNDQxNTA2LCJpYXQiOjE3NzA4MzY3MDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.P7RXWc5fDCJVq6JQkf6VMiIOgXNxQcKCy0j4_5V-gudpsOn7C23yZAiME_0e_L5gMGmJZTJI8th3jEd1uAsv3A
 ### 22. Ver mi portafolio (Ahora debe tener datos)
 GET http://localhost:5168/api/portfolio
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW8xQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6InVzdWFyaW8xIiwibmJmIjoxNzcwODE5NzAzLCJleHAiOjE3NzE0MjQ1MDMsImlhdCI6MTc3MDgxOTcwMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4In0.pJBbGAFjxsaDceh572IZY0-3jVBJ7t8Jjn_u7ZscHtlIlAr38KKiJGmudRkyvq2CVavlwgXgw_wZd5A1lyN_Ag
-
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsIm5iZiI6MTc3MDgzNjcwNiwiZXhwIjoxNzcxNDQxNTA2LCJpYXQiOjE3NzA4MzY3MDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.P7RXWc5fDCJVq6JQkf6VMiIOgXNxQcKCy0j4_5V-gudpsOn7C23yZAiME_0e_L5gMGmJZTJI8th3jEd1uAsv3A
 ### 23. Borrar Nvidia de mi portafolio
 DELETE http://localhost:5168/api/portfolio?symbol=NVDA
-Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW8xQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6InVzdWFyaW8xIiwibmJmIjoxNzcwODE5NzAzLCJleHAiOjE3NzE0MjQ1MDMsImlhdCI6MTc3MDgxOTcwMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTY4In0.pJBbGAFjxsaDceh572IZY0-3jVBJ7t8Jjn_u7ZscHtlIlAr38KKiJGmudRkyvq2CVavlwgXgw_wZd5A1lyN_Ag
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhmcmFuY28xNTc1QGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJ1c3VhcmlvMyIsIm5iZiI6MTc3MDgzNjcwNiwiZXhwIjoxNzcxNDQxNTA2LCJpYXQiOjE3NzA4MzY3MDYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE2OCJ9.P7RXWc5fDCJVq6JQkf6VMiIOgXNxQcKCy0j4_5V-gudpsOn7C23yZAiME_0e_L5gMGmJZTJI8th3jEd1uAsv3A
