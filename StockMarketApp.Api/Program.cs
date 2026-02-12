@@ -10,7 +10,7 @@ using System.Text;
 using StockMarketApp.Infrastructure.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using StockMarketApp.Application.Validations; // Para encontrar el validador
+using StockMarketApp.Application.Validations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +18,23 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. CAPA DE SERVICIOS (Antes del Build)
 // ==============================
 
-// A. Base de Datos
+// A. Base de Datos (ACTUALIZADO CON RESILIENCIA)
 builder.Services.AddDbContext<StockDbContext>(options =>
+{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-    b => b.MigrationsAssembly("StockMarketApp.Api"))); 
+    sqlOptions => 
+    {
+        // Esto permite que EF encuentre las migraciones en este proyecto
+        sqlOptions.MigrationsAssembly("StockMarketApp.Api");
+        
+        // --- ESTO ES LO NUEVO PARA AZURE ---
+        // Habilita reintentos automáticos si la conexión falla temporalmente
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5, 
+            maxRetryDelay: TimeSpan.FromSeconds(30), 
+            errorNumbersToAdd: null);
+    });
+});
 
 // B. Configuración de Identity (Usuarios)
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
@@ -68,11 +81,12 @@ builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
-builder.Services.AddFluentValidationAutoValidation(); // Activa la validación automática
-builder.Services.AddValidatorsFromAssemblyContaining<CreateStockRequestValidator>(); // Busca todos los validadores en el proyecto
+builder.Services.AddFluentValidationAutoValidation(); 
+builder.Services.AddValidatorsFromAssemblyContaining<CreateStockRequestValidator>(); 
 
 // E. Controladores y Swagger
-builder.Services.AddOpenApi(); 
+builder.Services.AddEndpointsApiExplorer(); // Necesario para Swagger clásico
+builder.Services.AddSwaggerGen(); // Usamos SwaggerGen para ver la UI bonita
 
 // ==============================
 // 2. CONSTRUCCIÓN (El punto de no retorno)
@@ -83,10 +97,10 @@ var app = builder.Build();
 // 3. PIPELINE HTTP (Middleware)
 // ==============================
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+// Configuramos Swagger para que se vea SIEMPRE (incluso en Azure/Producción)
+// Esto soluciona tu error 404
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

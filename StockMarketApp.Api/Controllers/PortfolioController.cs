@@ -51,7 +51,7 @@ namespace StockMarketApp.Api.Controllers
 
             var userPortfolio = await _portfolioRepo.GetUserPortfolio(appUser);
 
-            // Validar si ya lo tiene agregado
+            // Validación si ya lo tiene agregado
             if (userPortfolio.Any(e => e.Symbol.ToLower() == symbol.ToLower())) 
                 return BadRequest("Ya tienes este stock en tu portafolio");
 
