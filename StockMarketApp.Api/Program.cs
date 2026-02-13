@@ -11,6 +11,7 @@ using StockMarketApp.Infrastructure.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using StockMarketApp.Application.Validations;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,7 +87,39 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateStockRequestValidator
 
 // E. Controladores y Swagger
 builder.Services.AddEndpointsApiExplorer(); // Necesario para Swagger clásico
-builder.Services.AddSwaggerGen(); // Usamos SwaggerGen para ver la UI bonita
+// E. Controladores y Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "StockMarket API", Version = "v1" });
+    
+    // Le decimos a Swagger que usamos JWT
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Por favor ingresa el token válido. Ejemplo: 'Bearer eyJhb...'",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    
+    // Le decimos a Swagger que pida el token en los endpoints
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+}); // Usamos SwaggerGen para ver la UI bonita
 
 // ==============================
 // 2. CONSTRUCCIÓN (El punto de no retorno)
