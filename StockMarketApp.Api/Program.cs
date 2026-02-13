@@ -151,6 +151,8 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAngularApp");
+
 // --- ¡ESTAS DOS LÍNEAS ERAN VITALES! ---
 app.UseAuthentication(); // 1. ¿Quién eres? (Chequea el Token)
 app.UseAuthorization();  // 2. ¿Qué puedes hacer? (Chequea Roles)
