@@ -121,6 +121,20 @@ builder.Services.AddSwaggerGen(option =>
     });
 }); // Usamos SwaggerGen para ver la UI bonita
 
+
+// ==============================
+// CONFIGURACIÓN CORS (Permitir a Angular hablar con la API)
+// ==============================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        // Angular corre por defecto en el puerto 4200
+        policy.WithOrigins("http://localhost:4200") 
+              .AllowAnyMethod()  // Permite GET, POST, PUT, DELETE
+              .AllowAnyHeader(); // Permite enviar Tokens JWT
+    });
+});
 // ==============================
 // 2. CONSTRUCCIÓN (El punto de no retorno)
 // ==============================
